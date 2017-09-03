@@ -1,0 +1,29 @@
+{% macro paginater_widget(paginater, endpoint, fragment='') %}
+<ul class="pagination">
+    <li {% if not paginater.has_prev %} class="disabled"{% endif %}>
+        <a href="{% if paginater.has_prev %}{{ url_for(endpoint, page=paginater.prev_num, **kwargs) }}{{ fragment }}{% else %}#{% endif %}">
+            &laquo;
+        </a>
+    </li>
+    {% for p in paginater.iter_pages(right_current=3) %}
+        {% if p %}
+            {% if p == paginater.page %}
+            <li class="active">
+                <a href="{{ url_for(endpoint, page = p, **kwargs) }}{{ fragment }}">{{ p }}</a>
+            </li>
+            {% else %}
+            <li>
+                <a href="{{ url_for(endpoint, page = p, **kwargs) }}{{ fragment }}">{{ p }}</a>
+            </li>
+            {% endif %}
+        {% else %}
+        <li class="disabled"><a href="">&hellip;</a></li>
+        {% endif %}
+    {% endfor %}
+    <li {% if not paginater.has_next %} class="disabled"{% endif %}>
+        <a href="{% if paginater.has_next %}{{ url_for(endpoint, page=paginater.next_num, **kwargs) }}{{ fragment }}{% else %}#{% endif %}">
+            &raquo;
+        </a>
+    </li>
+</ul>
+{% endmacro %}

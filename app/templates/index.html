@@ -1,0 +1,83 @@
+{% extends "base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+{% import "_macros.html" as macros %}
+
+{%block head%}
+{{super()}}
+<script src="/static/Scripts/jquery-3.2.0.js" type="text/javascript"></script>
+ <script type="text/javascript">
+    $(document).ready(function(){
+    var obj = $('.intro_box').find('p');
+    obj.each(function(){
+    var str = $(this).text().substring(0,121)+"...";
+    console.log(str);
+    $(this).text(str);
+    })
+    })
+    </script>
+{%endblock%}
+
+{% block content %}
+<div class="navbar navbar-default" role="navigation">
+    <ul class="nav navbar-nav">
+	 	<li><a href="##" class="navbar-text-nomargin">分类</a></li>
+	 	<li><a href="##" class="navbar-text-nomargin">排行</a></li>
+        <li><a href="##" class="navbar-text-nomargin">新分</a></li>
+        <li><a href="##" class="navbar-text-nomargin">优品</a></li>
+        <li><a href="##" class="navbar-text-nomargin">影讯</a></li>
+    </ul>
+</div>
+{{super()}}
+{% endblock %}
+
+{% if paginater %}
+{% block page_content %}
+<div class="movie_list">
+    {% for movie in paginater.items %}
+    <div class="movie-container">
+        <div class="movie-intro-table">
+<table class="table table-hover">
+	<tr>
+            <td valign="top">
+             <a class="nbg" href="#" title="{{movie.movie_title}}">
+                        <img src="{{movie.img_src}}" width="100">
+                        </a>
+            </td>
+
+            <td valign="top">
+                <div class="detail">
+                    <a href="#" class="">
+                        {{movie.movie_title}}
+                    </a>
+                    <p class="divider"></p>
+                    <div class="intro_box">
+                        <p>{{movie.intro}}</p>
+                    </div>
+                    </div>
+                    <p class="divider"></p>
+                <div>
+                </div>
+            </td>
+        </tr>
+</table>
+        </div>
+    <div class="mark-box">
+                <table class="mark-box-table">
+                    <tr class="">
+                        <td><div class="big-mark">8.9</div></td>
+                        <td><div style="min-width:200px;"><a>影评</a></div></td>
+                    </tr>
+                    <tr><td>something</td></tr>
+                </table>
+            </div>
+        </div>
+{% endfor %}
+</div>
+<br/>
+<div class="pagination">
+{{ macros.paginater_widget(paginater,'.index') }}
+</div>
+{% endblock %}
+{% endif %}
+
+

@@ -1,0 +1,15 @@
+电影·世界
+
+思维无限，阻挡我们的是身体
+
+我们渴望在短暂的时间内、有限的机能中
+
+探索足够多的世界
+
+看遍人世间的百态
+
+这就是电影存在的意义
+
+欢迎加入我们，亲爱的{{user.username}}
+
+Click..Click..{{url_for('auth.confirm', token=token, _external=True)}}

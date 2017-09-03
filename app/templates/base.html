@@ -1,0 +1,85 @@
+{% extends "bootstrap/base.html" %}
+<!--注意，这个html文件的样式是就近原则，内部style>外部css文件，但是为什么后一个外部css没有覆盖掉bootstrap的css还不清楚
+可能是实际加载中，bootstrap的css是后加载的-->
+
+{% block title %}沉香{% endblock %}
+
+{% block head %}
+{{ super() }}
+<link rel="shortcut icon" href="{{ url_for('static', filename='favicon(16).ico') }}" type="image/x-icon">
+<link rel="icon" href="{{ url_for('static', filename='favicon(32).ico') }}" type="image/x-icon">
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
+<style>
+
+    .head-container {
+        background-color:#b8d7da;
+    }
+
+</style>
+{% endblock %}
+
+{% block navbar %}
+<div class="navbar navbar-inverse navbar-nomargin" role="navigation">
+    <div class="head-container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="{{ url_for('main.index') }}">沉香小站</a>
+        </div>
+        <div class="navbar-collapse collapse">
+            <ul class="nav navbar-nav navbar-right">
+                {% if current_user.can(SENIORPERMISSION.ARTICLE) %}
+                <li><a href="#">影评</a></li>
+                <li><a href="#">授分</a></li>
+                {% if current_user.is_admin %}
+                <li><a href="#">后台中心</a></li>
+                {% endif %}
+                {% endif %}
+                {% if current_user.is_authenticated %}
+                <li><a href="#">消息</a></li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+
+                        {{current_user.username}} <b class="caret"></b>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a href="#">个人资料</a></li>
+                        <li><a href="#">修改密码</a></li>
+                        <li><a href="#">修改邮箱</a></li>
+                        <li><a href="{{ url_for('auth.logout') }}">注销</a></li>
+                    </ul>
+                </li>
+
+                {% else %}
+                <li><a href="{{url_for('auth.login')}}">登录</a></li>
+                <li class="navbar-divider">|</li>
+                <li><a href={{url_for('auth.register')}}>注册</a></li>
+
+                {% endif %}
+            </ul>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    {% for message in get_flashed_messages() %}
+    <div class="alert alert-warning">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        {{ message }}
+    </div>
+    {% endfor %}
+
+    {% block page_content %}{% endblock %}
+</div>
+{% endblock %}
+
+{% block scripts %}
+{{ super() }}
+{{ moment.include_moment() }}
+{% endblock %}
